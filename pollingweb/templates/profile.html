@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %} Profile {% endblock title %}
+{% block body %} 
+{% load static%}
+<style>
+
+body{
+        background: url("https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80");
+        background-size: 75%;
+    }
+    .tr{
+      background: transparent;
+    }
+    .wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+    .buttonrv {
+  min-width: 300px;
+  min-height: 60px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-weight: 700;
+  color: #313133;
+  background: #4FD1C5;
+background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 100%);
+  border: none;
+  border-radius: 1000px;
+  box-shadow: 12px 12px 24px rgba(79,209,197,.64);
+  transition: all 0.3s ease-in-out 0s;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  padding: 10px;
+  }
+
+buttonrv::before {
+content: '';
+  border-radius: 1000px;
+  min-width: calc(300px + 12px);
+  min-height: calc(60px + 12px);
+  border: 6px solid #00FFCB;
+  box-shadow: 0 0 60px rgba(0,255,203,.64);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all .3s ease-in-out 0s;
+}
+
+</style>
+<div style="width: fit-content; margin-top: 10px; margin-left: 10px;">
+  {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+
+            {{message}}
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    <ul class="list-grou">
+        <li class="list-group-item tr">Name : {{user.first_name}} {{user.last_name}}</li>
+        <li class="list-group-item tr">Email : {{user.email}}</li>
+        <li class="list-group-item tr">Phone Number : {{userdata.phoneno}} </li>
+    </ul>
+</div>
+<div class="container">
+  <div class="row text-center">
+    <div class="col-lg-8 col-lg-offset-2">
+      <div class="panel panel-default">
+        <div class="wrap container" style="margin-bottom: 30px;">
+          <button class="buttonrv">Your Polls</button>
+        </div>
+        
+        <ul class="list-group">
+          {% for poll in poll_data %}
+          <li class="list-group-item tr">
+            <strong style="font-size: 30px;">{{ poll.question }}</strong><br>
+            <span class="pull-right">
+              <a href="/vote/?id={{poll.id}}" class="btn btn-info btn-xs">Vote</a> &nbsp;
+              <a href="/results/{{poll.id}}" class="btn btn-outline-primary">View Results</a> &nbsp;
+              <a href="/accounts/deletep/{{poll.id}}" class="btn btn-outline-warning">Delete Poll</a> &nbsp;
+            </span>
+          </li>
+          {% endfor %}
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
