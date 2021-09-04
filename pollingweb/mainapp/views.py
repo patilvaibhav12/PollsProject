@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from accounts.models import Userdata
 from django.contrib.auth.models import User
@@ -10,6 +11,7 @@ def infor(request):
     usr = Userdata.objects.get(username = user)
     return(usr)
 
+@login_required
 def index(request):
     if request.user.is_anonymous:
         return redirect('accounts/login')
@@ -17,6 +19,8 @@ def index(request):
     poll_data = polls.objects.all()
     context = {'userdata':userdata, 'poll_data':poll_data}
     return render(request,'index.html',context)
+
+@login_required
 def create(request):
     userdata = infor(request)
     poll_data = polls.objects.filter(user_name = userdata)
@@ -34,7 +38,8 @@ def create(request):
         return render(request,'create.html')
     else:
         return render(request, 'warning.html')
-    
+
+@login_required
 def vote(request):
     poll_id = request.GET.get('id')
     poll = polls.objects.get(pk=poll_id)
@@ -72,6 +77,7 @@ def vote(request):
         }
         return render(request, 'vote.html', context)
 
+@login_required    
 def results(request, poll_id):
     #poll_id = request.GET.get('id')
     if poll_id == '':
